@@ -24,6 +24,11 @@ div#logo {
     /*border-bottom: 1px solid black;*/   
 }
 
+div#logo img {
+    width:100%;
+    max-width:200px;
+}
+
 div#form {
     padding: 20px;
     padding-right: 20px;

@@ -16,6 +16,9 @@ title =         app.config['TITLE']
 # Redis configurations
 redis_server = os.environ['REDIS']
 
+# Customer Specific Logo
+logo_img = os.environ['LOGO_URL']
+
 # Redis Connection
 try:
     r = redis.Redis(redis_server)
@@ -31,6 +34,10 @@ if app.config['SHOWHOST'] == "true":
 r.set(button1,0)
 r.set(button2,0)
 
+# Check the image
+if not logo_img:
+    logo_img = app.config['DEFAULTLOGO']
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
 
@@ -41,7 +48,7 @@ def index():
         vote2 = r.get(button2).decode('utf-8')            
 
         # Return index with values
-        return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
+        return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title, logo=logo_img)
 
     elif request.method == 'POST':
 
@@ -52,7 +59,7 @@ def index():
             r.set(button2,0)
             vote1 = r.get(button1).decode('utf-8')
             vote2 = r.get(button2).decode('utf-8')
-            return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
+            return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title, logo=logo_img)
         
         else:
 
@@ -65,7 +72,7 @@ def index():
             vote2 = r.get(button2).decode('utf-8')  
                 
             # Return results
-            return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
+            return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title, logo=logo_img)
 
 if __name__ == "__main__":
     app.run()
